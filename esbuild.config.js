@@ -1,7 +1,7 @@
 import { build } from 'esbuild';
 import fs from 'node:fs'
 
-const isDev = process.argv.includes('--dev');
+const isDev = process.env.NODE_ENV === 'development';
 
 await build({
   entryPoints: ['./src/main.ts'],
@@ -11,7 +11,7 @@ await build({
   target: 'node20',
   format: 'cjs',
   minify: !isDev,
-  sourcemap: isDev,
+  sourcemap: true,
   define: {
     'process.env.NODE_ENV': JSON.stringify(isDev ? 'development' : 'production'),
   },
