@@ -37,7 +37,7 @@ jobs:
       - name: Verify build output
         run: |
           ls -la dist/
-          test -f dist/index.mjs && echo "Build successful" || (echo "Build failed - no index.mjs found" && exit 1)
+          test -f dist/index.cjs && echo "Build successful" || (echo "Build failed - no index.cjs found" && exit 1)
 
       - name: Zip dist folder
         run: |
