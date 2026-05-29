@@ -3,7 +3,7 @@ import fs from 'node:fs'
 
 const isDev = process.argv.includes('--dev');
 
-build({
+await build({
   entryPoints: ['./src/main.ts'],
   outfile: './dist/index.mjs',
   bundle: true,
