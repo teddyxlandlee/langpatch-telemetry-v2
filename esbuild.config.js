@@ -11,8 +11,8 @@ await build({
     target: "node20",
     format: "cjs",
     minify: !isDev,
-    sourcemap: true,
-    sourcesContent: true,
+    sourcemap: isDev,
+    sourcesContent: isDev,
     define: {
         "process.env.NODE_ENV": JSON.stringify(isDev ? "development" : "production"),
     },
