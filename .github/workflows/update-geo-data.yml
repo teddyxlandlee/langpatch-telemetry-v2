@@ -85,7 +85,7 @@ jobs:
 
           except Exception as e:
               print(f"Error uploading to COS: {str(e)}")
-              sys.exit(1)
+              raise
           EOF
         env:
           GEO_COS_SECRET_ID: ${{ secrets.GEO_COS_SECRET_ID }}
