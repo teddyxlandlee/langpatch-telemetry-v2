@@ -24,7 +24,7 @@ jobs:
 
       - name: Download geo database
         run: |
-          curl -L ${{ vars.GEO_DATA_URL }} -o geo.zip
+          curl -L ${{ secrets.GEO_DATA_URL }} -o geo.zip
           ls -la geo.zip
           echo "Downloaded file size: $(du -h geo.zip)"
 
