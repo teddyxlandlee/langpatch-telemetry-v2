@@ -50,7 +50,7 @@ jobs:
           secret_key = os.environ.get('GEO_COS_SECRET_KEY')
           region = os.environ.get('GEO_COS_REGION', 'ap-hongkong')
           bucket = os.environ.get('GEO_COS_BUCKET')
-          file_key = os.environ.get('GEO_COS_FILE_KEY', 'Country.mmdb')
+          file_key = os.environ.get('GEO_COS_FILE_KEY', 'geo.bin')
 
           if not secret_id or not secret_key or not bucket:
               print("Error: Missing required environment variables GEO_COS_SECRET_ID, GEO_COS_SECRET_KEY, or GEO_COS_BUCKET")
@@ -71,7 +71,7 @@ jobs:
               response = client.upload_file(
                   Bucket=bucket,
                   Key=file_key,
-                  LocalFilePath='./Country.mmdb',
+                  LocalFilePath='./geo.bin',
                   EnableMD5=False  # Skip MD5 calculation to save time
               )
 
@@ -94,4 +94,4 @@ jobs:
       - name: Cleanup
         if: always()
         run: |
-          rm -f Country.mmdb.gz Country.mmdb
+          rm -f geo.zip geo.bin
