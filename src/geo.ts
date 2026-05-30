@@ -22,7 +22,7 @@ class Ip2LocationGeoProvider implements GeoProvider {
     }
 
     private filter(message: string) : string {
-        if (message.includes('not applicable')) return ''
+        if (message.toLowerCase().includes('not applicable')) return ''
         return message
     }
 
