@@ -28,7 +28,7 @@ app.post('/v2', async (context) => {
             body = payload.content
             geoGetter = async () => payload.geo_context
         } catch (error) {
-            return new Response('Unauthorized', {status: 401})
+            return new Response('Unauthorized: ' + error, {status: 401})
         }
     } else {
         if ((context.req.header('Content-Type') || '') !== 'application/json') {
