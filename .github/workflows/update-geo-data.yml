@@ -24,15 +24,12 @@ jobs:
 
       - name: Download geo database
         run: |
-          curl -L ${{ vars.GEO_DATA_URL }} -o Country.mmdb.gz
-          ls -la Country.mmdb.gz
-          echo "Downloaded file size: $(du -h Country.mmdb.gz)"
+          curl -L ${{ vars.GEO_DATA_URL }} -o geo.zip
+          ls -la geo.zip
+          echo "Downloaded file size: $(du -h geo.zip)"
 
       - name: Extract geo database
-        run: |
-          gzip -d Country.mmdb.gz
-          ls -la Country.mmdb
-          echo "Extracted file size: $(du -h Country.mmdb)"
+        run: python3 deploy-scripts/extract-bin.py geo.zip geo.bin
 
       - name: Install COS SDK
         run: pip3 install cos-python-sdk-v5
@@ -78,7 +75,7 @@ jobs:
                   EnableMD5=False  # Skip MD5 calculation to save time
               )
 
-              print(f"Successfully uploaded Country.mmdb to COS:")
+              print(f"Successfully uploaded {file_key} to COS:")
               print(f"Bucket: {bucket}")
               print(f"Key: {file_key}")
               print(f"Region: {region}\n")

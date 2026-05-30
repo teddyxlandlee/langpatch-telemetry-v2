@@ -12,9 +12,9 @@
   },
   "dependencies": {
     "@hono/node-server": "^2.0.4",
-    "@maxmind/geoip2-node": "^6.3.4",
     "cos-nodejs-sdk-v5": "^2.11.19",
     "hono": "^4.12.23",
+    "ip2location-nodejs": "^9.8.0",
     "jsonwebtoken": "^9.0.3",
     "uuidv7": "^1.2.1"
   },
