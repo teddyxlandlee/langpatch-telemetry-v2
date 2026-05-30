@@ -25,9 +25,12 @@ app.post('/v2', async (context) => {
             if (typeof payload === 'string') {
                 return new Response('Expected JWT result to be JSON object, got string', {status: 400})
             }
-            body = payload.content
+            body = JSON.parse(payload.content)
             geoGetter = async () => payload.geo_context
         } catch (error) {
+            if (error instanceof SyntaxError) {
+                return new Response('Invalid JSON payload', {status: 400})
+            }
             console.error("Proxy JWT verification failed:", error)
             return new Response('Unauthorized', {status: 401})
         }
