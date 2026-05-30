@@ -21,14 +21,15 @@ app.post('/v2', async (context) => {
             return new Response('Content-Type mismatch (for proxy)', {status: 400})
         }
         try {
-            const payload = jwt.verify((await context.req.text()), PROXY_JWT_SECRET)
+            const payload = jwt.verify((await context.req.text()), Buffer.from(PROXY_JWT_SECRET, 'base64'))
             if (typeof payload === 'string') {
                 return new Response('Expected JWT result to be JSON object, got string', {status: 400})
             }
             body = payload.content
             geoGetter = async () => payload.geo_context
         } catch (error) {
-            return new Response('Unauthorized: ' + error, {status: 401})
+            console.error("Proxy JWT verification failed:", error)
+            return new Response('Unauthorized', {status: 401})
         }
     } else {
         if ((context.req.header('Content-Type') || '') !== 'application/json') {
