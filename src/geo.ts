@@ -39,15 +39,30 @@ class Ip2LocationGeoProvider implements GeoProvider {
 }
 
 let globalGeoProvider: GeoProvider | undefined
+let geoInitPromise: Promise<GeoProvider> | undefined
 
-async function getGeoProvider() : Promise<GeoProvider> {
-    if (!globalGeoProvider) {
-        while (isFileAbsentOrExpired(pathToGeoCache)) {
-            await fetchGeoProvider()
-        }
-        globalGeoProvider = new Ip2LocationGeoProvider()
+async function getGeoProvider(): Promise<GeoProvider> {
+    if (globalGeoProvider) {
+        return globalGeoProvider
     }
-    return globalGeoProvider
+
+    if (!geoInitPromise) {
+        geoInitPromise = (async () => {
+            try {
+                while (isFileAbsentOrExpired(pathToGeoCache)) {
+                    await fetchGeoProvider()
+                }
+                globalGeoProvider = new Ip2LocationGeoProvider()
+                return globalGeoProvider
+            } catch (error) {
+                console.error("GeoProvider init failed:", error)
+                geoInitPromise = undefined
+                throw error
+            }
+        })()
+    }
+
+    return geoInitPromise
 }
 
 // 10 days
