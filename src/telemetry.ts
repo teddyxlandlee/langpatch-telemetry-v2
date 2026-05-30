@@ -132,7 +132,13 @@ export async function responseV1V2(body: any, isProxy: boolean, geoGetter: () =>
 
     if (payload.telemetry_level >= LEVEL_FUNCTIONAL) {
         const payloadRef = payload as Schema1Telemetry1
-        const geo = await geoGetter()
+        let geo: Geo
+        try {
+            geo = await geoGetter()
+        } catch (error) {
+            console.error("Error getting geo", error)
+            geo = {country: {name: '[ERROR]', code: '[ERROR]'}, timezone: ''}
+        }
         payloadRef.client_context = {
             country: geo.country,
             timezone: geo.timezone,

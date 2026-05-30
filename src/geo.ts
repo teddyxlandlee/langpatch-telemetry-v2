@@ -83,15 +83,12 @@ async function fetchGeoProvider() : Promise<void> {
     fs.writeFileSync(pathToGeoCache, result)
 }
 
-export function getGeo(forwardedFor: string | undefined) : Promise<Geo> {
-    return new Promise(async (resolve, reject) => {
-        if (!forwardedFor) {
-            reject(new Error("forwarded for null"))
-            return;
-        }
-        const clientIp = forwardedFor.split(",")[0].trim()
-        const geoProvider = await getGeoProvider()
+export async function getGeo(forwardedFor: string | undefined) : Promise<Geo> {
+    if (!forwardedFor) {
+        throw new Error("forwarded for null")
+    }
+    const clientIp = forwardedFor.split(",")[0].trim()
+    const geoProvider = await getGeoProvider()
 
-        resolve(geoProvider.getGeo(clientIp))
-    })
+    return geoProvider.getGeo(clientIp)
 }
