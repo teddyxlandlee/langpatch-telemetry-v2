@@ -103,7 +103,7 @@ export type TelemetryReturnValue = {
     response: Response,
 }
 
-const SUPPORTS_PROXY_AS_SOURCE = true
+export const SUPPORTS_PROXY_AS_SOURCE = Date.now() < Date.parse('2026-06-20T19:19:08.100Z')
 
 /**
  * Note: Content-Type and Via remains unverified. They should be verified in upstream.
@@ -158,7 +158,7 @@ function pad2(x: number) {
 }
 
 // NOTE: GEO_COS_* are separated from COS_*.
-// GEO_COS_* are used to fetch Country.mmdb from COS (GET-only), while
+// GEO_COS_* are used to fetch geo.bin from COS (GET-only), while
 // COS_* are used for telemetry itself (PUT-only).
 const {
     COS_SECRET_ID,

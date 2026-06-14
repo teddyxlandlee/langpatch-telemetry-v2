@@ -1,7 +1,7 @@
 import { Hono } from 'hono'
 import { serve } from "@hono/node-server";
 import jwt from 'jsonwebtoken'
-import {Geo, responseV1V2} from "./telemetry.js";
+import {Geo, responseV1V2, SUPPORTS_PROXY_AS_SOURCE} from "./telemetry.js";
 import {getGeo} from "./geo.js";
 
 const app = new Hono({
@@ -17,6 +17,10 @@ app.post('/v2', async (context) => {
     const isProxy = context.req.header('Via')?.includes('LangPatch-Migrate-Proxy') || false
     let body: any, geoGetter: () => Promise<Geo>
     if (isProxy) {
+        if (!SUPPORTS_PROXY_AS_SOURCE) {
+            return new Response('Migrate Proxy is no longer supported', {status: 410})
+        }
+
         if ((context.req.header('Content-Type') || '').toLowerCase() !== 'text/plain; charset=utf-8') {
             return new Response('Content-Type mismatch (for proxy)', {status: 400})
         }
